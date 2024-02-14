@@ -3,7 +3,6 @@ package com.myapps.MyPasswordManager.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.myapps.MyPasswordManager.model.IdPassword;
@@ -18,7 +17,6 @@ public class IdPasswordServiceImpl implements IdPasswordService {
     private final IdPasswordRepository idPasswordRepository;
     private final List<IdPassword> deletedPasswords;
 
-    @Autowired
     public IdPasswordServiceImpl(IdPasswordRepository idPasswordRepository) {
         this.idPasswordRepository = idPasswordRepository;
         this.deletedPasswords = new ArrayList<>();
@@ -61,6 +59,20 @@ public class IdPasswordServiceImpl implements IdPasswordService {
 
     @Override
     public void restoredDeletedPassword(String siteApplicationName) {
+        // 削除されたパスワードを取得
+        IdPassword deletedPassword = deletedPasswords.stream()
+                .filter(password -> password.getSiteApplicationName().equals(siteApplicationName))
+                .findFirst()
+                .orElse(null);
+
+        // 削除されたパスワードが存在する場合
+        if (deletedPassword != null) {
+            // パスワードをデータベースに保存
+            idPasswordRepository.save(deletedPassword);
+
+            // メモリ上の削除済みリストからも削除
+            deletedPasswords.remove(deletedPassword);
+        }
     }
 
 }
