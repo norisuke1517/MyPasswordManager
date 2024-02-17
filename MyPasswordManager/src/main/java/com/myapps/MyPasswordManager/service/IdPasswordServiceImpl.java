@@ -44,7 +44,7 @@ public class IdPasswordServiceImpl implements IdPasswordService {
 
     @SuppressWarnings("null")
     @Override
-    public IdPassword resisterPassword(IdPassword idPassword) {
+    public IdPassword registerPassword(IdPassword idPassword) {
         return idPasswordRepository.save(idPassword);
     }
 
