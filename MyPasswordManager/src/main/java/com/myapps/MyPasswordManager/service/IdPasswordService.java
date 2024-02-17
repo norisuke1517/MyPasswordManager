@@ -13,7 +13,7 @@ public interface IdPasswordService {
 
     List<IdPassword> getSiteApplicationNameIdByPassword(String password);
 
-    IdPassword resisterPassword(IdPassword idPassword);
+    IdPassword registerPassword(IdPassword idPassword);
 
     void deletePassword(String siteApplicationName);
 
